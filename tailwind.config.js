@@ -16,13 +16,6 @@ module.exports = {
           fontWeight: "700",
         },
       ],
-      "heading1-semibold": [
-        "36px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
       "heading2-bold": [
         "30px",
         {
@@ -30,25 +23,11 @@ module.exports = {
           fontWeight: "700",
         },
       ],
-      "heading2-semibold": [
-        "30px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
       "heading3-bold": [
         "24px",
         {
           lineHeight: "140%",
           fontWeight: "700",
-        },
-      ],
-      "heading4-normal": [
-        "20px",
-        {
-          lineHeight: "140%",
-          fontWeight: "400",
         },
       ],
       "heading4-bold": [
@@ -65,36 +44,8 @@ module.exports = {
           fontWeight: "700",
         },
       ],
-      "body-semibold": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "body-medium": [
-        "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "500",
-        },
-      ],
       "body-normal": [
         "18px",
-        {
-          lineHeight: "140%",
-          fontWeight: "400",
-        },
-      ],
-      "base-normal": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "400",
-        },
-      ],
-      "base-semibold": [
-        "16px",
         {
           lineHeight: "140%",
           fontWeight: "500",
@@ -107,18 +58,11 @@ module.exports = {
           fontWeight: "600",
         },
       ],
-      "base1-semibold": [
-        "16px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
-      "small-normal": [
+      "small-bold": [
         "14px",
         {
           lineHeight: "140%",
-          fontWeight: "400",
+          fontWeight: "600",
         },
       ],
       "small-semibold": [
@@ -128,25 +72,11 @@ module.exports = {
           fontWeight: "500",
         },
       ],
-      "small-bold": [
-        "14px",
-        {
-          lineHeight: "140%",
-          fontWeight: "600",
-        },
-      ],
       "subtle-medium": [
         "12px",
         {
           lineHeight: "16px",
           fontWeight: "500",
-        },
-      ],
-      "subtle-semibold": [
-        "12px",
-        {
-          lineHeight: "16px",
-          fontWeight: "600",
         },
       ],
       "tiny-medium": [
@@ -175,13 +105,6 @@ module.exports = {
         "dark-1": "#121212",
         "dark-2": "#34303E",
         "blue-1": "#016FD5",
-        "logout-btn": "#FF5A5A",
-        "navbar-menu": "rgba(16, 16, 18, 0.6)",
-        "dark-4": "#1F1F22",
-        "light-3": "#7878A3",
-        "light-4": "#5C5C7B",
-        "gray-1": "#697C89",
-        glassmorphism: "rgba(16, 16, 18, 0.60)",
       }
     },
   },

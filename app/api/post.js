@@ -167,13 +167,13 @@ export const savePost = async (postId, userId) => {
   try {
     await connectToDB();
 
-    const user = await User.findById(userId);
-    const post = await Post.findById(postId).populate("creator likes").exec();
+    const user = await User.findById(userId.toString()).populate("savedPosts").exec();
+    const post = await Post.findById(postId.toString()).populate("creator likes").exec();
 
-    const savedPost = user.savedPosts.find((item) => item._id.toString() === postId)
+    const savedPost = user.savedPosts.find((item) => item._id === postId)
 
     if (savedPost) {
-      user.savedPosts = user.savedPosts.filter((item) => item._id.toString() !== postId);
+      user.savedPosts = user.savedPosts.filter((item) => item._id !== postId);
       await user.save()
       return user.savedPosts
     } else {

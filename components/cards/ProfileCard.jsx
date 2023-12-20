@@ -1,16 +1,11 @@
-import { getUserPosts } from "@app/api/post";
-import { getUser } from "@app/api/user";
 import { currentUser } from "@clerk/nextjs";
-import PostCard from "@components/cards/PostCard";
+import { tabs } from "@constants";
 import { PersonAddAlt } from "@mui/icons-material";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 
-const Profile = async ({ params }) => {
+const ProfileCard = async ({ userData, activeTab }) => {
   const userLoggedIn = await currentUser();
-
-  const userData = await getUser(params.id);
-  const userPosts = await getUserPosts(userData._id);
 
   return (
     <div className="flex flex-col gap-9">
@@ -52,24 +47,24 @@ const Profile = async ({ params }) => {
         </div>
 
         {userLoggedIn.id !== userData.clerkId && (
-          <PersonAddAlt sx={{ color: "#7857FF", fontSize: "40px", cursor: "pointer" }}/>
+          <PersonAddAlt
+            sx={{ color: "#7857FF", fontSize: "40px", cursor: "pointer" }}
+          />
         )}
       </div>
 
-      <div className="flex flex-col gap-10">
-        {userPosts.map((post) => (
-          <PostCard
-            key={post._id}
-            id={post._id}
-            creator={post.creator}
-            caption={post.caption}
-            tag={post.tag}
-            postPhoto={post.postPhoto}
-          />
+      <div className="flex gap-6">
+        {tabs.map((tab) => (
+          <Link
+          className={`tab ${activeTab === tab.name ? "bg-purple-1" : "bg-dark-2"}`}
+          href={`/profile/${userData.clerkId}/${tab.link}`}
+        >
+          {tab.name}
+        </Link>
         ))}
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default ProfileCard;

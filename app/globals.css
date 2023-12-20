@@ -44,7 +44,7 @@
   @apply absolute top-2 right-2 text-light-1 cursor-pointer hover:text-pink-1
 }
 
-/* Search Tabs */
+/* Tabs */
 .tab {
-  @apply px-5 py-2 rounded-lg text-light-1 text-body-bold
+  @apply px-4 py-2 rounded-lg text-light-1 text-small-bold
 }

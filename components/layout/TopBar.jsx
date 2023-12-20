@@ -47,7 +47,7 @@ const TopBar = () => {
           </SignOutButton>
         </SignedIn>
 
-        <Link href={`/profile/${user.id}`}>
+        <Link href={`/profile/${user.id}/posts`}>
           <Image
             src={user.imageUrl}
             alt="profile photo"

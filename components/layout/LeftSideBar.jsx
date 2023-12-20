@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { OrganizationSwitcher, SignOutButton, SignedIn, currentUser } from "@clerk/nextjs";
+import { SignOutButton, SignedIn, UserButton, currentUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Logout } from "@mui/icons-material";
 
@@ -22,7 +22,7 @@ const LeftSideBar = async () => {
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2 items-center text-light-1">
-          <Link href={`/profile/${user.id}`}>
+          <Link href={`/profile/${user.id}/posts`}>
             <Image
               src={userData?.profilePhoto}
               alt="user profile photo"
@@ -31,7 +31,7 @@ const LeftSideBar = async () => {
               className="rounded-full"
             />
           </Link>
-          <p className="text-small-normal">{userData.firstName} {userData.lastName}</p>
+          <p className="text-small-bold">{userData.firstName} {userData.lastName}</p>
         </div>
 
         <div className="flex text-light-1 justify-between">
@@ -56,20 +56,16 @@ const LeftSideBar = async () => {
 
       <hr />
 
-      <OrganizationSwitcher
-        appearance={{
-          baseTheme: dark,
-          elements: {
-            organizationSwitcherTrigger: "py-2",
-          },
-        }}
-      />
+      <div className="flex gap-4 items-center">
+        <UserButton theme={dark} />
+        <p className="text-light-1 text-body-bold">Manage Account</p>
+      </div>
 
       <SignedIn>
         <SignOutButton>
-          <div className="flex cursor-pointer gap-3 items-center">
-            <Logout sx={{ color: "white", fontSize: "26px" }} />
-            <p className="text-heading4-bold text-light-1">Logout</p>
+          <div className="flex cursor-pointer gap-4 items-center">
+            <Logout sx={{ color: "white", fontSize: "32px" }} />
+            <p className="text-body-bold text-light-1">Log Out</p>
           </div>
         </SignOutButton>
       </SignedIn>

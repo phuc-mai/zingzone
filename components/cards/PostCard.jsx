@@ -28,12 +28,10 @@ const PostCard = async ({ id, creator, caption, tag, postPhoto }) => {
     }
   };
 
-
-
   return (
     <div className="w-full max-w-xl rounded-lg flex flex-col gap-4 bg-dark-1 p-5 max-sm:gap-2">
       <div className="flex justify-between">
-        <Link href={`profile/${creator.clerkId}`}>
+        <Link href={`profile/${creator.clerkId}/posts`}>
           <div className="flex gap-3 items-center">
             <Image
               src={creator.profilePhoto}
