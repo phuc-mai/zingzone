@@ -2,6 +2,7 @@ import { getFeedPosts } from "@app/api/post";
 import { getUser } from "@app/api/user";
 import { currentUser } from "@clerk/nextjs";
 import PostCard from "@components/cards/PostCard";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await currentUser();
