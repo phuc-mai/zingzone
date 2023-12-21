@@ -2,6 +2,7 @@ import User from "@lib/models/User";
 
 export const createUser = async (id, username, first_name, last_name, image_url, email_addresses) => {
   try {
+    console.log("Creating user with info: ", id, username, first_name, last_name, image_url, email_addresses)
     await connectToDB();
 
     const newUser = new User({

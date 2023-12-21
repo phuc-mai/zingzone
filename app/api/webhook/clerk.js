@@ -41,6 +41,8 @@ export const POST = async (req) => {
     });
   }
 
+  console.log("Received an event with id and type:", evt?.id, evt?.type);
+
   const eventType = evt?.type;
 
   // Listen organization creation event
