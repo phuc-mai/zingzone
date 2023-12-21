@@ -45,6 +45,7 @@ export const POST = async (req) => {
 
   // Listen organization creation event
   if (eventType === "user.created") {
+    console.log(evt?.data)
     const { id, username, first_name, last_name, image_url, email_addresses } =
       evt?.data;
 
