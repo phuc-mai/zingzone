@@ -10,7 +10,7 @@ export const createUser = async (id, username, first_name, last_name, image_url,
       firstName: first_name,
       lastName: last_name,
       profilePhoto: image_url,
-      email: email_addresses[0].email_address,
+      // email: email_addresses[0].email_address,
     });
 
     await newUser.save();

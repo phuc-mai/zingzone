@@ -6,6 +6,7 @@ import { Logout } from "@mui/icons-material";
 
 import Menu from "./Menu";
 import { getUser } from "@app/api/user";
+import { redirect } from "next/navigation";
 
 const LeftSideBar = async () => {
   const user = await currentUser();
