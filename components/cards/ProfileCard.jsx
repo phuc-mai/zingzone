@@ -46,7 +46,7 @@ const ProfileCard = async ({ userData, activeTab }) => {
           </div>
         </div>
 
-        {userLoggedIn.id !== userData.clerkId && (
+        {userLoggedIn?.id !== userData?.clerkId && (
           <PersonAddAlt
             sx={{ color: "#7857FF", fontSize: "40px", cursor: "pointer" }}
           />

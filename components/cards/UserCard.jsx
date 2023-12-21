@@ -24,7 +24,7 @@ const UserCard = async ({ user }) => {
         </div>
       </div>
 
-      {userLoggedIn.id !== user.clerkId && (
+      {userLoggedIn?.id !== user?.clerkId && (
         <PersonAddAlt sx={{ color: "#7857FF", cursor: "pointer" }}/>
       )}
     </div>
