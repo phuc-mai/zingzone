@@ -2,6 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 
 import { createUser } from "./clerkUser";
+import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
 
@@ -44,34 +45,26 @@ export const POST = async (req) => {
 
   // Listen organization creation event
   if (eventType === "user.created") {
-    // const { id, username, first_name, last_name, image_url, email_addresses } =
-    //   evt?.data;
+    const { id, username, first_name, last_name, image_url, email_addresses } =
+      evt?.data;
 
-    // try {
-    //   await createUser(
-    //     id,
-    //     username,
-    //     first_name,
-    //     last_name,
-    //     image_url,
-    //     email_addresses
-    //   );
+    try {
+      await createUser(
+        id,
+        username,
+        first_name,
+        last_name,
+        image_url,
+        email_addresses
+      );
 
-    //   return NextResponse.json({ message: "User created" }, { status: 201 });
-    // } catch (err) {
-    //   console.log(err);
-    //   return NextResponse.json(
-    //     { message: "Internal Server Error" },
-    //     { status: 500 }
-    //   );
-    // }
-
-    // Get the ID and type
-    const { id } = evt?.data;
-
-    console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-    console.log("Webhook body:", body);
-
-    return new Response("User created", { status: 200 });
+      return NextResponse.json({ message: "User created" }, { status: 201 });
+    } catch (err) {
+      console.log(err);
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
   }
 };
