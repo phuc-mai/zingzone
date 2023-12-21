@@ -67,6 +67,18 @@ export const updateUserInfo = async (data) => {
   }
 };
 
+export const deleteUser = async (userId) => {
+  try {
+    await connectToDB();
+
+    const user = await User.findOneAndDelete({ clerkId: userId });
+
+    return user;
+  } catch (err) {
+    throw new Error(`Failed to delete user: ${err.message}`);
+  }
+}
+
 export const getAllUsers = async () => {
   try {
     await connectToDB();

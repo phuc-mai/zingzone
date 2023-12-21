@@ -41,7 +41,7 @@ const TopBar = () => {
       <div className="flex gap-3">
         <SignedIn>
           <SignOutButton>
-            <div className="flex cursor-pointer gap-3 items-center md:hidden">
+            <div className="flex cursor-pointer items-center md:hidden">
               <Logout sx={{ color: "white", fontSize: "30px" }} />
             </div>
           </SignOutButton>
