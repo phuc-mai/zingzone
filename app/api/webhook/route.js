@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 
-import { updateUser } from "./clerkUser";
+import { deleteUser, updateUser } from "./clerkUser";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
@@ -43,13 +43,12 @@ export const POST = async (req) => {
 
   const eventType = evt?.type;
 
-  // Listen organization creation event
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, username, first_name, last_name, image_url, email_addresses } =
       evt?.data;
 
     try {
-      await updateUser(
+      await createOrUpdateUser(
         id,
         username,
         first_name,
@@ -59,6 +58,25 @@ export const POST = async (req) => {
       );
 
       return NextResponse.json({ message: "User created" }, { status: 201 });
+    } catch (err) {
+      console.log(err);
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
+  }
+
+  if (eventType === "user.deleted") {
+    try {
+      const { id } = evt?.data;
+
+      await deleteUser(id);
+
+      return NextResponse.json(
+        { message: "User deleted" },
+        { status: 201 }
+      );
     } catch (err) {
       console.log(err);
       return NextResponse.json(

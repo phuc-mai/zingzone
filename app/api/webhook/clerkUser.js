@@ -1,7 +1,7 @@
 import User from "@lib/models/User";
 import { connectToDB } from "@lib/mongodb/mongoose";
 
-export const updateUser = async (id, username, first_name, last_name, image_url, email_addresses) => {
+export const createOrUpdateUser = async (id, username, first_name, last_name, image_url, email_addresses) => {
   try {
     await connectToDB();
 
@@ -23,6 +23,15 @@ export const updateUser = async (id, username, first_name, last_name, image_url,
   } catch (err) {
     throw new Error(`Failed to create or update user: ${err.message}`);
   }
-
 }
 
+export const deleteUser = async (id) => {
+  try {
+    await connectToDB();
+
+    await User.findOneAndDelete({ clerkId: id });
+
+  } catch (err) {
+    throw new Error(`Failed to delete user: ${err.message}`);
+  }
+}
