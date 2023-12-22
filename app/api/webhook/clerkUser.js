@@ -1,24 +1,28 @@
 import User from "@lib/models/User";
 import { connectToDB } from "@lib/mongodb/mongoose";
 
-export const createUser = async (id, username, first_name, last_name, image_url, email_addresses) => {
+export const updateUser = async (id, username, first_name, last_name, image_url, email_addresses) => {
   try {
-    console.log("Creating user with info: ", id, username, first_name, last_name, image_url, email_addresses)
     await connectToDB();
 
-    const newUser = new User({
-      clerkId: id,
-      username,
-      firstName: first_name,
-      lastName: last_name,
-      profilePhoto: image_url,
-    });
+    const user = await User.findOneAndUpdate(
+      { clerkId: id },
+      {
+        $set: {
+          username,
+          firstName: first_name,
+          lastName: last_name,
+          profilePhoto: image_url,
+          email: email_addresses[0].email_address,
+        },
+      },
+      { upsert: true, new: true } // Create a new user if the user does not exist, and return the updated document
+    );
 
-    await newUser.save();
-
-    return newUser;
+    return user;
   } catch (err) {
-    console.log(err)
-    throw new Error(`Failed to create user: ${err.message}`);
+    throw new Error(`Failed to create or update user: ${err.message}`);
   }
+
 }
+

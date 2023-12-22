@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 
-import { createUser } from "./clerkUser";
+import { updateUser } from "./clerkUser";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
@@ -41,18 +41,15 @@ export const POST = async (req) => {
     });
   }
 
-  console.log("Received an event with id and type:", evt?.id, evt?.type);
-
   const eventType = evt?.type;
 
   // Listen organization creation event
-  if (eventType === "user.created") {
-    console.log(evt?.data)
+  if (eventType === "user.created" || eventType === "user.updated") {
     const { id, username, first_name, last_name, image_url, email_addresses } =
       evt?.data;
 
     try {
-      await createUser(
+      await updateUser(
         id,
         username,
         first_name,

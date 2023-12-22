@@ -5,10 +5,10 @@ import { authMiddleware } from "@clerk/nextjs";
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Mi ddleware
 export default authMiddleware({
   // An array of public routes that don't require authentication.
-  publicRoutes: ["/api/webhook", "/api/webhook/clerk"],
+  publicRoutes: ["/api/webhook"],
 
   // An array of routes to be ignored by the authentication middleware.
-  ignoredRoutes: ["/api/webhook", "/api/webhook/clerk"],
+  ignoredRoutes: ["/api/webhook"],
 });
  
 export const config = {
