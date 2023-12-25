@@ -44,7 +44,7 @@ const Posting = ({ post, handlePublish }) => {
         className="flex items-center gap-4 text-light-1 cursor-pointer"
       >
         {watch("postPhoto") ? (
-          //check profilePhoto is a string or a file
+          //check postPhoto is a string or a file
           typeof watch("postPhoto") === "string" ? (
             <Image
               src={watch("postPhoto")}

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -7,22 +9,24 @@ import {
   Bookmark,
   BorderColor,
 } from "@mui/icons-material";
-import { currentUser } from "@clerk/nextjs";
 import { likePost, savePost } from "@app/api/post";
 import { getUser } from "@app/api/user";
+import { useEffect, useState } from "react";
 
-const PostCard = async ({ id, creator, caption, tag, postPhoto }) => {
-  const user = await currentUser();
-  if (!user) return null;
+const PostCard = ({ id, creator, caption, tag, postPhoto, userId, userData }) => {
+  const [isSaved, setIsSaved] = useState(false);
 
-  const userData = await getUser(user.id);
-
-  const isSaved = userData?.savedPosts.find((item) => item?._id === id);
+  useEffect(() => {
+    if (userData) {
+      setIsSaved(userData?.savedPosts?.find((item) => item?._id === id));
+    }
+  }, [userData]);
 
   // handle save post function
   const handleSave = async () => {
     try {
-      await savePost(id, userData._id);
+      const isAlreadySaved = await savePost(id, userData._id);
+      setIsSaved(isAlreadySaved);
     } catch (err) {
       console.log(err);
     }
@@ -51,7 +55,7 @@ const PostCard = async ({ id, creator, caption, tag, postPhoto }) => {
           </div>
         </Link>
 
-        {user.id === creator.clerkId && (
+        {userId === creator.clerkId && (
           <Link href={`/edit-post/${id}`}>
             <BorderColor className="text-light-1 cursor-pointer" />
           </Link>
@@ -77,12 +81,18 @@ const PostCard = async ({ id, creator, caption, tag, postPhoto }) => {
       <div className="flex justify-between">
         <FavoriteBorder className="text-light-1 cursor-pointer" />
 
-        {user.id !== creator.clerkId && !isSaved && (
-          <BookmarkBorder className="text-light-1 cursor-pointer" />
+        {userId !== creator.clerkId && !isSaved && (
+          <BookmarkBorder
+            className="text-light-1 cursor-pointer"
+            onClick={() => handleSave()}
+          />
         )}
 
-        {user.id !== creator.clerkId && isSaved && (
-          <Bookmark className="text-purple-1 cursor-pointer" onClick={handleSave}/>
+        {userId !== creator.clerkId && isSaved && (
+          <Bookmark
+            className="text-purple-1 cursor-pointer"
+            onClick={() => handleSave()}
+          />
         )}
       </div>
     </div>

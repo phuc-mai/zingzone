@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 
-import { deleteUser, updateUser } from "./clerkUser";
+import { deleteUser, createOrUpdateUser } from "./clerkUser";
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {

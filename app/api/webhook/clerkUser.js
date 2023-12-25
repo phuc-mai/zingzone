@@ -25,6 +25,7 @@ export const createOrUpdateUser = async (id, username, first_name, last_name, im
   }
 }
 
+
 export const deleteUser = async (id) => {
   try {
     await connectToDB();

@@ -14,24 +14,21 @@ export const createPost = async (data) => {
 
     let postPhoto = data.get("postPhoto");
 
-    // Check if data.get("profilePhoto") is an array or a string
-    if (typeof postPhoto !== "String") {
-      // Taking the file which is a Web specific API and turn it into some form of bytes that NodeJS or other server APIs understand
-      const bytes = await postPhoto.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+    // Taking the file which is a Web specific API and turn it into some form of bytes that NodeJS or other server APIs understand
+    const bytes = await postPhoto.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-      // With the file data in the buffer, we can do whatever we want with it
-      // For example, we can write it to the file system in a new location
-      const postPhotoPath = path.join(
-        currentWorkingDirectory,
-        "public",
-        "uploads",
-        postPhoto.name
-      );
-      await writeFile(postPhotoPath, buffer);
+    // With the file data in the buffer, we can do whatever we want with it
+    // For example, we can write it to the file system in a new location
+    const postPhotoPath = path.join(
+      currentWorkingDirectory,
+      "public",
+      "uploads",
+      postPhoto.name
+    );
+    await writeFile(postPhotoPath, buffer);
 
-      postPhoto = `/uploads/${postPhoto.name}`;
-    }
+    postPhoto = `/uploads/${postPhoto.name}`;
 
     const newPost = await Post.create({
       creator: data.get("creator"),
@@ -167,24 +164,29 @@ export const savePost = async (postId, userId) => {
   try {
     await connectToDB();
 
-    const user = await User.findById(userId.toString()).populate("savedPosts").exec();
-    const post = await Post.findById(postId.toString()).populate("creator likes").exec();
+    const user = await User.findById(userId).populate("savedPosts").exec();
+    const post = await Post.findById(postId).populate("creator likes").exec();
 
-    const savedPost = user.savedPosts.find((item) => item._id === postId)
+    const savedPost = user.savedPosts.find(
+      (item) => item._id.toString() === postId
+    );
 
     if (savedPost) {
-      user.savedPosts = user.savedPosts.filter((item) => item._id !== postId);
-      await user.save()
-      return user.savedPosts
+      user.savedPosts = user.savedPosts.filter(
+        (item) => item._id.toString() !== postId
+      );
+      await user.save();
+      return false;
     } else {
       user.savedPosts.push(post);
-      await user.save()
-      return user.savedPosts
+      await user.save();
+      return true;
     }
   } catch (err) {
+    console.log(err);
     throw new Error(`Failed to save or unsave post: ${err.message}`);
   }
-}
+};
 
 export const likePost = async ({ postId, userId }) => {
   try {
