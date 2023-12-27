@@ -1,32 +1,51 @@
-import { getUsersBySearch } from "@app/api/user";
+"use client";
+
 import UserCard from "@components/cards/UserCard";
+import Loader from "@components/loader";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const Search = async ({ params }) => {
-  const searchedUsers = await getUsersBySearch(params.query);
+const SearchPeople = () => {
+  const { query } = useParams();
 
-  return (
+  const [loading, setLoading] = useState(true);
+
+  const [searchedUsers, setSearchedUsers] = useState([]);
+
+  const getSearchedUsers = async () => {
+    try {
+      const response = await fetch(`/api/user/search/${query}`);
+      const data = await response.json();
+      setSearchedUsers(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSearchedUsers();
+  }, [query]);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col gap-10">
       <div className="flex gap-6">
-        <Link
-          className={`tab bg-dark-2`}
-          href={`/search/posts/${params.query}`}
-        >
+        <Link className={`tab bg-dark-2`} href={`/search/posts/${query}`}>
           Posts
         </Link>
-        <Link
-          className={`tab bg-purple-1`}
-          href={`/search/people/${params.query}`}
-        >
+        <Link className={`tab bg-purple-1`} href={`/search/people/${query}`}>
           People
         </Link>
       </div>
 
       {searchedUsers.map((user) => (
-        <UserCard user={user} />
+        <UserCard userData={user} />
       ))}
     </div>
   );
 };
 
-export default Search;
+export default SearchPeople;

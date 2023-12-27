@@ -1,31 +1,46 @@
-import { getUserPosts } from "@app/api/post";
-import { getUser } from "@app/api/user";
-import PostCard from "@components/cards/PostCard";
+"use client"
+
 import ProfileCard from "@components/cards/ProfileCard";
-import React from "react";
+import UserCard from "@components/cards/UserCard";
+import Loader from "@components/loader";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const UserPosts = async ({ params }) => {
-  const userData = await getUser(params.id);
-  const userPosts = await getUserPosts(userData._id);
+const Followers = () => {
+  const { id } = useParams();
 
-  return (
+  const [loading, setLoading] = useState(true);
+
+  const [userData, setUserData] = useState({});
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`/api/user/${id}`);
+      const data = await response.json();
+      setUserData(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [id]);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col gap-9">
       <ProfileCard userData={userData} activeTab="Followers" />
 
-      <div className="flex flex-col gap-10">
-        {userPosts.map((post) => (
-          <PostCard
-            key={post._id}
-            id={post._id}
-            creator={post.creator}
-            caption={post.caption}
-            tag={post.tag}
-            postPhoto={post.postPhoto}
-          />
+      <div className="flex flex-col gap-4 my-6">
+        {userData.followers.map((item) => (
+          <UserCard key={user._id} userData={item} />
         ))}
       </div>
     </div>
   );
 };
 
-export default UserPosts;
+export default Followers;

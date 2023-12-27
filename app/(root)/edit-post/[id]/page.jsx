@@ -1,34 +1,56 @@
-import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { getUser } from "@app/api/user";
-import { getPost, updatePost } from "@app/api/post";
+"use client";
+
+import { useUser } from "@clerk/nextjs";
 import Posting from "@components/forms/Posting";
+import Loader from "@components/loader";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
+const EditPost = () => {
+  const { id } = useParams();
 
-const EditPost = async ({ params }) => {
-  if (!params.id) return null;
+  const [loading, setLoading] = useState(true);
 
-  const user = await currentUser();
+  const [postData, setPostData] = useState({});
+
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await fetch(`/api/post/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        setPostData(data);
+        setLoading(false);
+      } catch (err) {
+        console.log("Get post failed", err.message);
+      }
+    };
+
+    getPost();
+  }, [id]);
+
+  
+  const { user } = useUser();
   if (!user) return null;
 
-  const userData = await getUser(user.id);
-  if (!userData) redirect("/create-profile");
-
-  const post = await getPost(params.id);
-
-  const postData = {
-    postId: params.id,
-    caption: post?.caption,
-    tag: post?.tag,
-    postPhoto: post?.postPhoto,
+  const post = {
+    creatorClerkId: user.id,
+    caption: postData?.caption,
+    tag: postData?.tag,
+    postPhoto: postData?.postPhoto,
   };
 
-  return (
+  const apiRoute = `/api/post/${id}`;
+
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="pt-6">
-      <Posting
-        post={postData}
-        handlePublish={updatePost}
-      />
+      <Posting post={post} apiRoute={apiRoute} />
     </div>
   );
 };

@@ -3,7 +3,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 import "../globals.css";
-import TopBar from "@components/layout/TopBar";
 import LeftSideBar from "@components/layout/LeftSideBar";
 import RightSideBar from "@components/layout/RightSideBar";
 import BottomBar from "@components/layout/BottomBar";

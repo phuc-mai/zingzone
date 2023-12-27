@@ -1,21 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { SignOutButton, SignedIn, UserButton, currentUser } from "@clerk/nextjs";
+import { SignOutButton, SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Logout } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 import Menu from "./Menu";
-import { getUser } from "@app/api/user";
-import { redirect } from "next/navigation";
+import Loader from "@components/loader";
 
-const LeftSideBar = async () => {
-  const user = await currentUser();
-  if (!user) return null;
+const LeftSideBar = () => {
+  const { user, isLoaded } = useUser();
 
-  const userData = await getUser(user.id);
-  if (!userData) redirect("/create-profile");
+  const [loading, setLoading] = useState(true);
 
-  return (
+  const [userData, setUserData] = useState({});
+
+  const getUser = async () => {
+    const response = await fetch(`/api/user/${user.id}`);
+    const data = await response.json();
+    setUserData(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUser();
+    }
+  }, [user]);
+
+  return loading || !isLoaded ? (
+    <Loader />
+  ) : (
     <div className="h-screen left-0 top-0 sticky overflow-auto px-10 py-6 flex flex-col gap-6 max-md:hidden custom-scrollbar">
       <Link href="/">
         <Image src="/assets/logo.png" alt="logo" width={200} height={100} />
@@ -32,7 +49,9 @@ const LeftSideBar = async () => {
               className="rounded-full"
             />
           </Link>
-          <p className="text-small-bold">{userData.firstName} {userData.lastName}</p>
+          <p className="text-small-bold">
+            {userData.firstName} {userData.lastName}
+          </p>
         </div>
 
         <div className="flex text-light-1 justify-between">

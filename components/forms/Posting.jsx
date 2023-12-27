@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-const Posting = ({ post, handlePublish }) => {
+const Posting = ({ post, apiRoute }) => {
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -16,19 +17,30 @@ const Posting = ({ post, handlePublish }) => {
     defaultValues: post,
   });
 
-
   const onSubmit = async (data) => {
+    const creatorClerkId = post.creatorClerkId;
+
     try {
       const postForm = new FormData();
 
-      for (const key in data) {
-        if (key === "postPhoto" && typeof data[key] !== "string")
-          postForm.append(key, data[key][0]);
-        else postForm.append(key, data[key]);
+      postForm.append("creatorId", post.creatorId);
+      postForm.append("caption", data.caption);
+      postForm.append("tag", data.tag);
+
+      if (typeof data.postPhoto !== "string") {
+        postForm.append("postPhoto", data.postPhoto[0]);
+      } else {
+        postForm.append("postPhoto", data.postPhoto);
       }
 
-      const post = await handlePublish(postForm);
-      if (post) router.push("/");
+      const response = await fetch(apiRoute, {
+        method: "POST",
+        body: postForm,
+      });
+
+      if (response.ok) {
+        router.push(`/profile/${creatorClerkId}/posts`);
+      }
     } catch (err) {
       console.log("Create or Update post failed", err.message);
     }

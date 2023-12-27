@@ -9,26 +9,52 @@ import {
   Bookmark,
   BorderColor,
 } from "@mui/icons-material";
-import { likePost, savePost } from "@app/api/post";
-import { getUser } from "@app/api/user";
 import { useEffect, useState } from "react";
 
-const PostCard = ({ id, creator, caption, tag, postPhoto, userId, userData }) => {
-  const [isSaved, setIsSaved] = useState(false);
+const PostCard = ({ id, creator, caption, tag, postPhoto, likes, userId, triggerUpdate }) => {
+  const [userData, setUserData] = useState({});
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`/api/user/${userId}`);
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (userData) {
-      setIsSaved(userData?.savedPosts?.find((item) => item?._id === id));
-    }
-  }, [userData]);
+    getUser();
+  }, [userId]);
 
-  // handle save post function
+  const isSaved = userData?.savedPosts?.find((post) => post._id === id);
+
+  const isLiked = userData?.likedPosts?.find((post) => post._id === id);
+
   const handleSave = async () => {
     try {
-      const isAlreadySaved = await savePost(id, userData._id);
-      setIsSaved(isAlreadySaved);
-    } catch (err) {
-      console.log(err);
+      const response = await fetch(`/api/user/${userId}/savedPosts/${id}`, {
+        method: "PATCH",
+      });
+      const data = await response.json();
+      setUserData(data);
+      triggerUpdate();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await fetch(`/api/user/${userId}/likedPosts/${id}`, {
+        method: "PATCH",
+      });
+      const data = await response.json();
+      setUserData(data);
+      triggerUpdate();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -79,21 +105,33 @@ const PostCard = ({ id, creator, caption, tag, postPhoto, userId, userData }) =>
       </p>
 
       <div className="flex justify-between">
-        <FavoriteBorder className="text-light-1 cursor-pointer" />
+        <div className="flex gap-2 items-center">
+          {!isLiked ? (
+            <FavoriteBorder
+              className="text-light-1 cursor-pointer"
+              onClick={() => handleLike()}
+            />
+          ) : (
+            <Favorite
+              className="text-pink-1 cursor-pointer"
+              onClick={() => handleLike()}
+            />
+          )}
+          <p className="text-light-1">{likes.length}</p>
+        </div>
 
-        {userId !== creator.clerkId && !isSaved && (
-          <BookmarkBorder
-            className="text-light-1 cursor-pointer"
-            onClick={() => handleSave()}
-          />
-        )}
-
-        {userId !== creator.clerkId && isSaved && (
-          <Bookmark
-            className="text-purple-1 cursor-pointer"
-            onClick={() => handleSave()}
-          />
-        )}
+        {userId !== creator.clerkId &&
+          (isSaved ? (
+            <Bookmark
+              className="text-purple-1 cursor-pointer"
+              onClick={() => handleSave()}
+            />
+          ) : (
+            <BookmarkBorder
+              className="text-light-1 cursor-pointer"
+              onClick={() => handleSave()}
+            />
+          ))}
       </div>
     </div>
   );

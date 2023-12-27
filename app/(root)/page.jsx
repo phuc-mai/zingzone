@@ -1,19 +1,32 @@
-import { getFeedPosts } from "@app/api/post";
-import { getUser } from "@app/api/user";
-import { currentUser } from "@clerk/nextjs";
+"use client"
+
+import { useEffect, useState } from "react";
+
 import PostCard from "@components/cards/PostCard";
-import { redirect } from "next/navigation";
+import Loader from "@components/loader";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
-export default async function Home() {
-  const user = JSON.parse(JSON.stringify(await currentUser()));
-  if (!user) return null;
+export default function Home() {
+  const [loading, setLoading] = useState(true);
 
-  const userData = JSON.parse(JSON.stringify(await getUser(user.id)));
-  if (!userData) redirect("/create-profile");
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
 
-  const feedPosts = JSON.parse(JSON.stringify(await getFeedPosts()));
+  const [feedPosts, setFeedPosts] = useState([]);
 
-  return (
+  const getFeedPosts = async () => {
+    const response = await fetch("/api/post");
+    const data = await response.json();
+    setFeedPosts(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getFeedPosts();
+  }, []);
+  
+  return loading || !isLoaded ? <Loader /> : (
     <div className="flex flex-col gap-10">
       {feedPosts.map((post) => {
         return (
@@ -24,8 +37,10 @@ export default async function Home() {
             caption={post.caption}
             tag={post.tag}
             postPhoto={post.postPhoto}
+            likes={post.likes}
             userId={user.id}
-            userData={userData}
+            router={router}
+            triggerUpdate={getFeedPosts}
           />
         );
       })}

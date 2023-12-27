@@ -1,4 +1,5 @@
 'use client';
+
 import React from "react";
 import TopBar from "./TopBar";
 import { usePathname } from "next/navigation";

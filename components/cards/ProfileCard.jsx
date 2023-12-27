@@ -1,12 +1,10 @@
-import { currentUser } from "@clerk/nextjs";
+"use client";
+
 import { tabs } from "@constants";
-import { PersonAddAlt } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProfileCard = async ({ userData, activeTab }) => {
-  const userLoggedIn = await currentUser();
-
+const ProfileCard = ({ userData, activeTab }) => {
   return (
     <div className="flex flex-col gap-9">
       <div className="flex items-start justify-between">
@@ -45,22 +43,18 @@ const ProfileCard = async ({ userData, activeTab }) => {
             </div>
           </div>
         </div>
-
-        {userLoggedIn?.id !== userData?.clerkId && (
-          <PersonAddAlt
-            sx={{ color: "#7857FF", fontSize: "40px", cursor: "pointer" }}
-          />
-        )}
       </div>
 
       <div className="flex gap-6">
         {tabs.map((tab) => (
           <Link
-          className={`tab ${activeTab === tab.name ? "bg-purple-1" : "bg-dark-2"}`}
-          href={`/profile/${userData.clerkId}/${tab.link}`}
-        >
-          {tab.name}
-        </Link>
+            className={`tab ${
+              activeTab === tab.name ? "bg-purple-1" : "bg-dark-2"
+            }`}
+            href={`/profile/${userData.clerkId}/${tab.link}`}
+          >
+            {tab.name}
+          </Link>
         ))}
       </div>
     </div>
