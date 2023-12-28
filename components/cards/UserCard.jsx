@@ -27,7 +27,9 @@ const UserCard = ({ userData }) => {
   };
 
   useEffect(() => {
-    getUser();
+    if (user) {
+      getUser();
+    }
   }, []);
 
   const isFollowing = userInfo?.following?.find(

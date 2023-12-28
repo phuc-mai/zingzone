@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   const { user, isLoaded } = useUser();
+
   const router = useRouter();
 
   const [feedPosts, setFeedPosts] = useState([]);
@@ -23,10 +24,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getFeedPosts();
+      getFeedPosts();
   }, []);
-  
-  return loading || !isLoaded ? <Loader /> : (
+
+  return loading || !isLoaded ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col gap-10">
       {feedPosts.map((post) => {
         return (

@@ -1,11 +1,64 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
+import Loader from "@components/loader";
 import { tabs } from "@constants";
+import { PersonAddAlt, PersonRemove } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const ProfileCard = ({ userData, activeTab }) => {
-  return (
+  const { user, isLoaded } = useUser();
+
+  const [userInfo, setUserInfo] = useState({});
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`/api/user/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setUserInfo(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUser();
+    }
+  }, []);
+
+  const isFollowing = userInfo?.following?.find(
+    (item) => item._id === userData._id
+  );
+
+  const handleFollow = async () => {
+    try {
+      const response = await fetch(
+        `/api/user/${user.id}/follow/${userData._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setUserInfo(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return !isLoaded ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col gap-9">
       <div className="flex items-start justify-between">
         <div className="flex gap-5 items-start">
@@ -43,6 +96,19 @@ const ProfileCard = ({ userData, activeTab }) => {
             </div>
           </div>
         </div>
+
+        {user?.id !== userData?.clerkId &&
+          (isFollowing ? (
+            <PersonRemove
+              sx={{ color: "#7857FF", cursor: "pointer", fontSize: "40px" }}
+              onClick={() => handleFollow()}
+            />
+          ) : (
+            <PersonAddAlt
+              sx={{ color: "#7857FF", cursor: "pointer", fontSize: "40px" }}
+              onClick={() => handleFollow()}
+            />
+          ))}{" "}
       </div>
 
       <div className="flex gap-6">
