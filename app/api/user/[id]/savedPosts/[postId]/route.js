@@ -8,22 +8,27 @@ export const PATCH = async (req, { params }) => {
     const userId = params.id;
     const postId = params.postId;
 
-    const user = await User.findOne({ clerkId: userId }).populate("posts savedPosts likedPosts followers following");
+    const user = await User.findOne({ clerkId: userId }).populate("posts savedPosts likedPosts following followers");
+
     const post = await Post.findById(postId).populate("creator likes");
 
-    const isSaved = user.savedPosts.find((item) => item._id.toString() === postId)
+    const isSaved = user.savedPosts.find(
+      (item) => item._id.toString() === postId
+    );
 
     if (isSaved) {
-      user.savedPosts = user.savedPosts.filter((item) => item._id.toString() !== postId);
-      await user.save()
+      user.savedPosts = user.savedPosts.filter(
+        (item) => item._id.toString() !== postId
+      );
+      await user.save();
       return new Response(JSON.stringify(user), { status: 200 });
     } else {
       user.savedPosts.push(post);
-      await user.save()
+      await user.save();
       return new Response(JSON.stringify(user), { status: 200 });
     }
   } catch (err) {
-    console.log(err)
-    return new Response("Failed to patch post to saved Posts", { status: 500 })
+    console.log(err);
+    return new Response("Failed to patch post to saved Posts", { status: 500 });
   }
-}
+};

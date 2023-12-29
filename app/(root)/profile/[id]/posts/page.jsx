@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 const UserPosts = () => {
   const { user, isLoaded } = useUser();
+  
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,8 @@ const UserPosts = () => {
   useEffect(() => {
     getUser();
   }, [id]);
+
+  console.log(userData)
 
   return loading || !isLoaded ? <Loader /> : (
     <div className="flex flex-col gap-9">

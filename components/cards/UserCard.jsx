@@ -6,7 +6,7 @@ import { PersonAddAlt, PersonRemove } from "@mui/icons-material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const UserCard = ({ userData }) => {
+const UserCard = ({ userData, updateTrigger }) => {
   const { user, isLoaded } = useUser();
 
   const [userInfo, setUserInfo] = useState({});
@@ -49,6 +49,7 @@ const UserCard = ({ userData }) => {
       );
       const data = await response.json();
       setUserInfo(data);
+      updateTrigger()
     } catch (error) {
       console.log(error);
     }

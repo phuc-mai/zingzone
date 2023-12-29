@@ -38,7 +38,7 @@ const Following = () => {
 
       <div className="flex flex-col gap-4 my-6">
         {userData?.following?.map((item) => (
-          <UserCard key={item._id} userData={item} />
+          <UserCard key={item._id} userData={item} updateTrigger={getUser} />
         ))}
       </div>
     </div>

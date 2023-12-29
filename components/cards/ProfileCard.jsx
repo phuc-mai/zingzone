@@ -62,15 +62,13 @@ const ProfileCard = ({ userData, activeTab }) => {
     <div className="flex flex-col gap-9">
       <div className="flex items-start justify-between">
         <div className="flex gap-5 items-start">
-          <div className="flex flex-col gap-3">
-            <Image
-              src={userData.profilePhoto}
-              alt="profile photo"
-              width={100}
-              height={100}
-              className="rounded-full md:max-lg:hidden"
-            />
-          </div>
+          <Image
+            src={userData.profilePhoto}
+            alt="profile photo"
+            width={100}
+            height={100}
+            className="rounded-full md:max-lg:hidden"
+          />
 
           <div className="flex flex-col gap-3">
             <p className="text-light-1 text-heading3-bold max-sm:text-heading4-bold">
@@ -79,7 +77,6 @@ const ProfileCard = ({ userData, activeTab }) => {
             <p className="text-light-3 text-subtle-semibold">
               @{userData.username}
             </p>
-            <p className="text-light-1 text-small-normal">{userData.bio}</p>
             <div className="flex gap-7 text-small-bold max-sm:gap-4">
               <div className="flex gap-2 max-sm:flex-col items-center max-sm:gap-0.5">
                 <p className="text-purple-1">{userData.posts.length}</p>
@@ -96,7 +93,6 @@ const ProfileCard = ({ userData, activeTab }) => {
             </div>
           </div>
         </div>
-
         {user?.id !== userData?.clerkId &&
           (isFollowing ? (
             <PersonRemove
