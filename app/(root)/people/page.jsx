@@ -27,7 +27,7 @@ const People = () => {
   return loading ? <Loader /> : (
     <div className="flex flex-col gap-4 my-6">
       {users.map((user) => (
-        <UserCard key={user._id} userData={user} />
+        <UserCard key={user._id} userData={user} triggerUpdate={getUsers} />
       ))}
     </div>
   );

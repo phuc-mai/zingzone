@@ -8,10 +8,21 @@ import {
   BookmarkBorder,
   Bookmark,
   BorderColor,
+  Delete,
+  Update,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
-const PostCard = ({ id, creator, caption, tag, postPhoto, likes, userId, triggerUpdate }) => {
+const PostCard = ({
+  id,
+  creator,
+  caption,
+  tag,
+  postPhoto,
+  likes,
+  userId,
+  triggerUpdate,
+}) => {
   const [userData, setUserData] = useState({});
 
   const getUser = async () => {
@@ -57,6 +68,17 @@ const PostCard = ({ id, creator, caption, tag, postPhoto, likes, userId, trigger
       console.log(error);
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      await fetch(`/api/post/${id}`, {
+        method: "DELETE",
+      });
+      triggerUpdate()
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="w-full max-w-xl rounded-lg flex flex-col gap-4 bg-dark-1 p-5 max-sm:gap-2">
@@ -132,6 +154,8 @@ const PostCard = ({ id, creator, caption, tag, postPhoto, likes, userId, trigger
               onClick={() => handleSave()}
             />
           ))}
+
+        {userId === creator.clerkId && <Delete sx={{ color: "white", cursor: "pointer" }} onClick={() => handleDelete()}/>}
       </div>
     </div>
   );

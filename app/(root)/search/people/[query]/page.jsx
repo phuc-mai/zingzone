@@ -42,7 +42,7 @@ const SearchPeople = () => {
       </div>
 
       {searchedUsers.map((user) => (
-        <UserCard userData={user} />
+        <UserCard userData={user} triggerUpdate={getSearchedUsers} />
       ))}
     </div>
   );

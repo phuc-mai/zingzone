@@ -31,8 +31,6 @@ const UserPosts = () => {
     getUser();
   }, [id]);
 
-  console.log(userData)
-
   return loading || !isLoaded ? <Loader /> : (
     <div className="flex flex-col gap-9">
       <ProfileCard userData={userData} activeTab="Posts" />
@@ -48,6 +46,7 @@ const UserPosts = () => {
             likes={post.likes}
             creator={userData}
             userId={user.id}
+            triggerUpdate={getUser}
           />
         ))}
       </div>

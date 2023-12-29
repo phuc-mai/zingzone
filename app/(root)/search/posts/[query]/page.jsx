@@ -55,6 +55,7 @@ const Search = () => {
           tag={post.tag}
           postPhoto={post.postPhoto}
           likes={post.likes}
+          triggerUpdate={getSearchedPosts}
         />
       ))}
     </div>
