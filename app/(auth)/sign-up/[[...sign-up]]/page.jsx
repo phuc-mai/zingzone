@@ -6,7 +6,6 @@ export default function Page() {
     <SignUp
       appearance={{
         baseTheme: dark,
-        redirectUrl: "/",
       }}
     />
   );

@@ -18,7 +18,7 @@ function Bottombar() {
           <Link
             href={link.route}
             key={link.label}
-            className={`flex gap-2 items-center rounded-lg py-2 px-4 ${isActive && "bg-purple-1"}`}
+            className={`sticky flex gap-2 items-center rounded-lg py-2 px-4 ${isActive && "bg-purple-1"}`}
           >
             {link.icon}
             <p className='text-small-medium text-light-1 max-sm:hidden'>

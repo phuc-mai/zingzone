@@ -14,13 +14,13 @@ export const POST = async (req, { params }) => {
 
     if (following) {
       user.following = user.following.filter((item) => item._id.toString() !== followId);
-      personToFollow.followers = personToFollow.followers.filter((item) => item._id.toString() !== userId);
+      personToFollow.followers = personToFollow.followers.filter((item) => item._id.toString() !== user._id.toString());
       await user.save()
       await personToFollow.save()
       return new Response(JSON.stringify(user), { status: 200 });
     } else {
       user.following.push(followId);
-      personToFollow.followers.push(userId);
+      personToFollow.followers.push(user._id);
       await user.save()
       await personToFollow.save()
       return new Response(JSON.stringify(user), { status: 200 });

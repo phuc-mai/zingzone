@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import Loader from "@components/loader";
 import { PersonAddAlt, PersonRemove } from "@mui/icons-material";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const UserCard = ({ userData, updateTrigger }) => {
@@ -59,7 +60,7 @@ const UserCard = ({ userData, updateTrigger }) => {
     <Loader />
   ) : (
     <div className="flex justify-between items-center">
-      <div className="flex gap-4 items-center">
+      <Link className="flex gap-4 items-center" href={`/profile/${userData.clerkId}/posts`}>
         <Image
           src={userData.profilePhoto}
           alt="profile photo"
@@ -75,7 +76,7 @@ const UserCard = ({ userData, updateTrigger }) => {
             @{userData.username}
           </p>
         </div>
-      </div>
+      </Link>
 
       {user?.id !== userData?.clerkId &&
         (isFollowing ? (
