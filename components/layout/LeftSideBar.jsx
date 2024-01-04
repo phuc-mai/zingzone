@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { SignOutButton, SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Logout } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -78,7 +78,7 @@ const LeftSideBar = () => {
 
       <div className="flex gap-4 items-center">
         <UserButton
-          appearance={{ baseTheme: "dark" }}
+          appearance={{ baseTheme: dark }}
           afterSignOutUrl="/sign-in"
         />
         <p className="text-light-1 text-body-bold">Manage Account</p>

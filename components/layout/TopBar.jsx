@@ -1,11 +1,11 @@
 "use client";
 
-import { SignOutButton, SignedIn, UserButton, useUser } from "@clerk/nextjs";
-import { Search, Add, Logout, Person } from "@mui/icons-material";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { Search, Add, Person } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { dark } from "@clerk/themes";
 
 const TopBar = () => {
@@ -14,23 +14,6 @@ const TopBar = () => {
 
   const { user } = useUser();
   if (!user) return null;
-
-  // const [loading, setLoading] = useState(true);
-
-  // const [userData, setUserData] = useState({});
-
-  // const getUserData = async () => {
-  //   const response = await fetch(`/api/users/${user.id}`);
-  //   const data = await response.json();
-  //   setUserData(data);
-  //   setLoading(false);
-  // };
-
-  // useEffect(() => {
-  //   if (user) {
-  //     getUserData();
-  //   }
-  // }, [user]);
 
   return (
     <div className="flex justify-between items-center mt-6">
@@ -63,7 +46,7 @@ const TopBar = () => {
           />
         </Link>
 
-        <UserButton appearance={{ baseTheme: "dark" }} afterSignOutUrl="/sign-in" />
+        <UserButton appearance={{ baseTheme: dark }} afterSignOutUrl="/sign-in" />
       </div>
     </div>
   );

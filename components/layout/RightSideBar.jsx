@@ -1,9 +1,6 @@
 "use client";
 
-import UserCard from "@components/cards/UserCard";
-import Loader from "@components/loader";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const RightSideBar = () => {
   return (
