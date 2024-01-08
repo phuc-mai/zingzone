@@ -9,6 +9,7 @@ export default authMiddleware({
 
   // An array of routes to be ignored by the authentication middleware.
   ignoredRoutes: ["/api/webhook"],
+
 });
  
 export const config = {
